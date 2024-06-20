@@ -21,8 +21,6 @@ namespace WebApplication1.Controllers
                 Sliders = _context.sliders.AsNoTracking().ToList(),
                 SliderContent = _context.sliderContents.AsNoTracking().SingleOrDefault(),
                 Categories = _context.categories.ToList(),
-                Products = _context.products.Include(p=>p.ProductImages).ToList(),
-                Blogs = _context.blogs.OrderByDescending(b=>b.Id).Take(3).ToList()
             };
             return View(homeVM);
         }

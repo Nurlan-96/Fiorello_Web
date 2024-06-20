@@ -15,7 +15,10 @@ namespace WebApplication1.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.blogs.AsNoTracking().OrderByDescending(b=>b.Id).ToList());
+            var query = _context.blogs.AsQueryable();
+            ViewBag.BlogCount= query.Count();
+            var datas = query.AsNoTracking().OrderByDescending(b=>b.Id).Take(3).ToList();
+            return View(datas);
         }
         public IActionResult Detail (int? id)
         {
@@ -24,5 +27,16 @@ namespace WebApplication1.Controllers
             if(blogs == null) return NotFound();
             return View(blogs);
         }
+        public IActionResult LoadMore(int offset = 3)
+        {
+            var datas=_context.blogs.Skip(offset).Take(3).ToList();
+            return PartialView("_BlogPartialView",datas);
+        }
+
+        public IActionResult Search(string text)
+        {
+            var datas = _context.blogs.Where(b=>b.Title.ToLower().Contains(text.ToLower())).OrderByDescending(b=>b.Id).Take(3).ToList();
+            return PartialView("_SearchPartialView",datas);
+        } 
     }
 }

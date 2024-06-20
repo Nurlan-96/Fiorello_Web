@@ -1,5 +1,44 @@
 $(document).ready(function () {
 
+    $(document).on("keyup", "#input-search", function ()
+    {
+        $('#searchlist li').slice(1).remove();
+        let value = $(this).val().trim();
+        if (value) {
+            $.ajax({
+                url: "/blog/search?text="+value,
+                method: "get",
+                success: function (datas) {
+                    $('#searchlist').append(datas)
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            })
+        }
+    })
+
+
+    //Load More
+    let skip = 3;
+    $(document).on("click", "#loadmore", function () {
+        $.ajax({
+            url: "/blog/LoadMore?offset="+skip,
+            method: "get",
+            success: function (datas) {
+                $('#blogList').append(datas)
+                skip += 3;
+                if (skip >= $("#BlogCount").val()) {
+                    $("#loadmore").remove();
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    })
+    //Load More
+
     // HEADER
 
     $(document).on('click', '#search', function () {
