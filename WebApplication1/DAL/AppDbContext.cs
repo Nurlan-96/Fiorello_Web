@@ -11,9 +11,17 @@ namespace WebApplication1.DAL
         public DbSet<Product> products { get; set; }
         public DbSet<ProductImage> productImages { get; set; }
         public DbSet<Blog> blogs { get; set; }
+        public DbSet<Setting> settings { get; set; }
         public AppDbContext(DbContextOptions options) : base(options)
         {
 
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //modelBuilder.ApplyConfiguration(new SettingConfiguration());
+            //modelBuilder.ApplyConfiguration(new BlogConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

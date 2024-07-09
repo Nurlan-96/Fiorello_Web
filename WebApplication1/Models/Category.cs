@@ -7,7 +7,8 @@ namespace WebApplication1.Models
         [Required]
         [MaxLength(25)]
         public string Name { get; set; }
-
+        [MaxLength(1000)]
+        public string Desc { get; set; }
         public List<Product> Products { get; set; }
     }
 }
